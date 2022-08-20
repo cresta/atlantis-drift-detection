@@ -16,6 +16,16 @@ func ReadEnvFile(t *testing.T, rootDir string) {
 	envs, err := godotenv.Read(expectedEnvPath)
 	require.NoError(t, err)
 	for k, v := range envs {
-		t.Setenv(k, v)
+		if os.Getenv(k) == "" {
+			t.Setenv(k, v)
+		}
 	}
+}
+
+func EnvOrSkip(t *testing.T, env string) string {
+	body := os.Getenv(env)
+	if body == "" {
+		t.Skip(env + " not set, skipping test")
+	}
+	return body
 }

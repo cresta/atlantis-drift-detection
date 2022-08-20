@@ -25,16 +25,33 @@ type PlanSummaryRequest struct {
 }
 
 type PlanResult struct {
-	Summaries []string
+	Summaries []PlanSummary
+}
+
+type PlanSummary struct {
+	HasLock bool
+	Summary string
 }
 
 func (p *PlanResult) HasChanges() bool {
 	for _, summary := range p.Summaries {
-		if !strings.Contains(summary, "No changes. ") {
+		if summary.HasLock {
+			continue
+		}
+		if !strings.Contains(summary.Summary, "No changes. ") {
 			return true
 		}
 	}
 	return false
+}
+
+func (p *PlanResult) IsLocked() bool {
+	for _, summary := range p.Summaries {
+		if !summary.HasLock {
+			return false
+		}
+	}
+	return true
 }
 
 func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*PlanResult, error) {
@@ -66,15 +83,16 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 
 	resp, err := c.HTTPClient.Do(httpReq)
 	if err != nil {
-		return nil, fmt.Errorf("error making plan request to %s: %w", destination, err)
-	}
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("non-200 response for %s: %d", destination, resp.StatusCode)
+		return nil, fmt.Errorf("error making plan request to %s (%s): %w", destination, resp.Status, err)
 	}
 	var bodyResult command.Result
 	if err := json.NewDecoder(resp.Body).Decode(&bodyResult); err != nil {
-		return nil, fmt.Errorf("error decoding plan response: %s", err)
+		return nil, fmt.Errorf("error decoding plan response(code:%d): %w", resp.StatusCode, err)
 	}
+	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusInternalServerError {
+		return nil, fmt.Errorf("non-200 and non-500 response for %s: %d", destination, resp.StatusCode)
+	}
+
 	if bodyResult.Error != nil {
 		return nil, fmt.Errorf("error making plan request: %w", bodyResult.Error)
 	}
@@ -83,20 +101,19 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 	}
 	var ret PlanResult
 	for _, result := range bodyResult.ProjectResults {
-		if result.Error != nil {
-			return nil, fmt.Errorf("error getting project result: %w", result.Error)
-		}
-		if !result.IsSuccessful() {
-			return nil, fmt.Errorf("plan result not successful: %s", result.Failure)
-		}
 		if result.Failure != "" {
-			return nil, fmt.Errorf("project result failure: %s", result.Failure)
+			if strings.Contains(result.Failure, "This project is currently locked ") {
+				ret.Summaries = append(ret.Summaries, PlanSummary{HasLock: true})
+				continue
+			}
 		}
-		if result.PlanSuccess == nil {
-			return nil, fmt.Errorf("plan result missing plan success")
+		if result.PlanSuccess != nil {
+			summary := result.PlanSuccess.Summary()
+			ret.Summaries = append(ret.Summaries, PlanSummary{Summary: summary})
+			continue
 		}
-		summary := result.PlanSuccess.Summary()
-		ret.Summaries = append(ret.Summaries, summary)
+		return nil, fmt.Errorf("project result unknown failure: %s", result.Failure)
+
 	}
 	return &ret, nil
 }

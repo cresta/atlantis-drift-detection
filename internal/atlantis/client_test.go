@@ -6,45 +6,44 @@ import (
 	"github.com/cresta/atlantis-drift-detection/internal/testhelper"
 	"github.com/stretchr/testify/require"
 	"net/http"
-	"os"
 	"testing"
 )
 
 func makeTestClient(t *testing.T) *Client {
-	atlantisHost := os.Getenv("ATLANTIS_HOST")
-	if atlantisHost == "" {
-		t.Skip("ATLANTIS_HOST not set, skipping test")
-	}
-	testToken := os.Getenv("ATLANTIS_TOKEN")
-	if testToken == "" {
-		t.Skip("ATLANTIS_TOKEN not set, skipping test")
-	}
 	c := Client{
-		AtlantisHostname: atlantisHost,
-		Token:            testToken,
+		AtlantisHostname: testhelper.EnvOrSkip(t, "ATLANTIS_HOST"),
+		Token:            testhelper.EnvOrSkip(t, "ATLANTIS_TOKEN"),
 		HTTPClient:       http.DefaultClient,
 	}
 	return &c
 }
 
 func loadPlanSummaryOk(t *testing.T) *PlanSummaryRequest {
-	body := os.Getenv("PLAN_SUMMARY_OK")
-	if body == "" {
-		t.Skip("PLAN_SUMMARY_OK not set, skipping test")
-	}
+	return loadPlanSummaryRequest(t, "PLAN_SUMMARY_OK")
+}
+
+func loadPlanSummaryRequest(t *testing.T, name string) *PlanSummaryRequest {
+	body := testhelper.EnvOrSkip(t, name)
 	var ret PlanSummaryRequest
 	require.NoError(t, json.Unmarshal([]byte(body), &ret))
 	return &ret
 }
 
+func loadPlanSummaryLock(t *testing.T) *PlanSummaryRequest {
+	return loadPlanSummaryRequest(t, "PLAN_SUMMARY_LOCK")
+}
+
 func loadPlanSummaryChanges(t *testing.T) *PlanSummaryRequest {
-	body := os.Getenv("PLAN_SUMMARY_CHANGES")
-	if body == "" {
-		t.Skip("PLAN_SUMMARY_CHANGES not set, skipping test")
-	}
-	var ret PlanSummaryRequest
-	require.NoError(t, json.Unmarshal([]byte(body), &ret))
-	return &ret
+	return loadPlanSummaryRequest(t, "PLAN_SUMMARY_CHANGES")
+}
+
+func TestClient_PlanSummaryLock(t *testing.T) {
+	testhelper.ReadEnvFile(t, "../../")
+	c := makeTestClient(t)
+	req := loadPlanSummaryLock(t)
+	ok, err := c.PlanSummary(context.Background(), req)
+	require.NoError(t, err)
+	require.True(t, ok.IsLocked())
 }
 
 func TestClient_PlanSummaryOk(t *testing.T) {
