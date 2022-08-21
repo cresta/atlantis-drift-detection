@@ -3,11 +3,13 @@ package terraform
 import (
 	"context"
 	"github.com/cresta/atlantis-drift-detection/internal/testhelper"
+	"github.com/cresta/pipe"
 	"github.com/stretchr/testify/require"
+	"path/filepath"
 	"testing"
 )
 
-func TestInit(t *testing.T) {
+func TestClient_Init(t *testing.T) {
 	testhelper.ReadEnvFile(t, "../../")
 	c := Client{
 		Directory: testhelper.EnvOrSkip(t, "TERRAFORM_DIR"),
@@ -15,10 +17,28 @@ func TestInit(t *testing.T) {
 	require.NoError(t, c.Init(context.Background(), testhelper.EnvOrSkip(t, "TERRAFORM_SUBDIR")))
 }
 
-func TestInit_Emptydir(t *testing.T) {
+func TestClient_InitEmptydir(t *testing.T) {
 	td := t.TempDir()
 	c := Client{
 		Directory: td,
 	}
 	require.NoError(t, c.Init(context.Background(), ""))
+}
+
+func TestClient_ListWorkspaces(t *testing.T) {
+	testhelper.ReadEnvFile(t, "../../")
+	td := t.TempDir()
+	c := Client{
+		Directory: td,
+	}
+	const subdir = ""
+	require.NoError(t, c.Init(context.Background(), subdir))
+	workspaces, err := c.ListWorkspaces(context.Background(), subdir)
+	require.NoError(t, err)
+	require.Equal(t, []string{"default"}, workspaces)
+	ctx := context.Background()
+	require.NoError(t, pipe.NewPiped("terraform", "workspace", "new", "testing").WithDir(filepath.Join(c.Directory)).Run(ctx))
+	workspaces, err = c.ListWorkspaces(context.Background(), subdir)
+	require.NoError(t, err)
+	require.Equal(t, []string{"default", "testing"}, workspaces)
 }

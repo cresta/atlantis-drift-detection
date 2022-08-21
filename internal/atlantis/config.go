@@ -8,6 +8,19 @@ import (
 	"path/filepath"
 )
 
+type DirectoriesWithWorkspaces map[string][]string
+
+func ConfigToWorkspaces(cfg *valid.RepoCfg) DirectoriesWithWorkspaces {
+	workspaces := make(DirectoriesWithWorkspaces)
+	for _, p := range cfg.Projects {
+		if _, exists := workspaces[p.Dir]; !exists {
+			workspaces[p.Dir] = []string{}
+		}
+		workspaces[p.Dir] = append(workspaces[p.Dir], p.Workspace)
+	}
+	return workspaces
+}
+
 func ParseRepoConfig(body string) (*valid.RepoCfg, error) {
 	var pv config.ParserValidator
 	var vg valid.GlobalCfg
