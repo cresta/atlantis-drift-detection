@@ -21,6 +21,7 @@ type Drifter struct {
 	Notification       notification.Notification
 	AtlantisClient     *atlantis.Client
 	DirectoryWhitelist []string
+	SkipWorkspaceCheck bool
 }
 
 func (d *Drifter) Drift(ctx context.Context) error {
@@ -89,6 +90,9 @@ func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.Directo
 }
 
 func (d *Drifter) FindExtraWorkspaces(ctx context.Context, ws atlantis.DirectoriesWithWorkspaces) error {
+	if d.SkipWorkspaceCheck {
+		return nil
+	}
 	for _, dir := range ws.SortedKeys() {
 		if d.shouldSkipDirectory(dir) {
 			d.Logger.Info("Skipping directory", zap.String("dir", dir))
