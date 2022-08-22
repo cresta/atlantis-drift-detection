@@ -1,4 +1,4 @@
-FROM golang:1.19.0 as build
+FROM public.ecr.aws/docker/library/golang:1.19.0 as build
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o /atlantis-drift-detection ./cmd/atlantis-drift-detection/main.go
 
-FROM ubuntu:22.10
+FROM public.ecr.aws/docker/library/ubuntu:22.10
 
 RUN  apt-get update \
   && apt-get install -y wget unzip git \

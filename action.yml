@@ -24,8 +24,8 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   env:
-    ATLANTIS_HOST: '{{ inputs.atlantisHost }}'
-    ATLANTIS_TOKEN: '{{ inputs.atlantisToken }}'
-    REPO: '{{ inputs.repo }}'
-    SLACK_WEBHOOK_URL: '{{ inputs.slackWebhookURL }}'
-    SKIP_WORKSPACE_CHECK: '{{ inputs.skipWorkspaceCheck }}'
+    ATLANTIS_HOST: ${{ inputs.atlantisHost }}
+    ATLANTIS_TOKEN: ${{ inputs.atlantisToken }}
+    REPO: ${{ inputs.repo }}
+    SLACK_WEBHOOK_URL: ${{ inputs.slackWebhookURL }}
+    SKIP_WORKSPACE_CHECK: ${{ inputs.skipWorkspaceCheck }}
