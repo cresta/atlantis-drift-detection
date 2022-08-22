@@ -1,0 +1,26 @@
+name: 'Atlantis terraform drift detection'
+description: 'Some automation to detect drift inside atlantis via the remote /plan endpoint'
+branding:
+  icon: 'activity'
+  color: 'blue'
+inputs:
+  atlantisHost:
+    description: 'Atlantis hostname with protocol.  Example: "https://atlantis.company.com'
+    required: true
+  atlantisToken:
+    description: 'Atlantis API token'
+    required: true
+  repo:
+    description: 'Repository to check'
+    required: true
+  slackWebhookURL:
+    description: 'Slack webhook URL to send notifications to'
+    required: false
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  env:
+    ATLANTIS_HOST: '{{ inputs.atlantisHost }}'
+    ATLANTIS_TOKEN: '{{ inputs.atlantisToken }}'
+    REPO: '{{ inputs.repo }}'
+    SLACK_WEBHOOK_URL: '{{ inputs.slackWebhookURL }}'
