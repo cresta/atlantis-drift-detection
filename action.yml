@@ -16,6 +16,10 @@ inputs:
   slackWebhookURL:
     description: 'Slack webhook URL to send notifications to'
     required: false
+  skipWorkspaceCheck:
+    description: 'If true, skip the workspace/ls check'
+    required: false
+    default: "false"
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -24,3 +28,4 @@ runs:
     ATLANTIS_TOKEN: '{{ inputs.atlantisToken }}'
     REPO: '{{ inputs.repo }}'
     SLACK_WEBHOOK_URL: '{{ inputs.slackWebhookURL }}'
+    SKIP_WORKSPACE_CHECK: '{{ inputs.skipWorkspaceCheck }}'

@@ -25,6 +25,7 @@ type config struct {
 	AtlantisToken      string   `env:"ATLANTIS_TOKEN,required"`
 	DirectoryWhitelist []string `env:"DIRECTORY_WHITELIST,required"`
 	SlackWebhookURL    string   `env:"SLACK_WEBHOOK_URL"`
+	SkipWorkspaceCheck bool     `env:"SKIP_WORKSPACE_CHECK"`
 }
 
 func loadEnvIfExists() error {
@@ -108,10 +109,11 @@ func main() {
 			Token:            cfg.AtlantisToken,
 			HTTPClient:       http.DefaultClient,
 		},
-		Cloner:       cloner,
-		GithubClient: ghClient,
-		Terraform:    &tf,
-		Notification: notif,
+		Cloner:             cloner,
+		GithubClient:       ghClient,
+		Terraform:          &tf,
+		Notification:       notif,
+		SkipWorkspaceCheck: cfg.SkipWorkspaceCheck,
 	}
 	if err := d.Drift(ctx); err != nil {
 		logger.Panic("failed to drift", zap.Error(err))
