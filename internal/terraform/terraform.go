@@ -5,12 +5,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/cresta/pipe"
+	"go.uber.org/zap"
 	"path/filepath"
 	"strings"
 )
 
 type Client struct {
 	Directory string
+	Logger    *zap.Logger
 }
 
 type execErr struct {
@@ -28,6 +30,7 @@ func (e *execErr) Error() string {
 }
 
 func (c *Client) Init(ctx context.Context, subDir string) error {
+	c.Logger.Info("Initializing terraform", zap.String("dir", subDir))
 	var stdout, stderr bytes.Buffer
 	result := pipe.NewPiped("terraform", "init", "-no-color").WithDir(filepath.Join(c.Directory, subDir)).Execute(ctx, nil, &stdout, &stderr)
 	if result != nil {
@@ -41,6 +44,7 @@ func (c *Client) Init(ctx context.Context, subDir string) error {
 }
 
 func (c *Client) ListWorkspaces(ctx context.Context, subDir string) ([]string, error) {
+	c.Logger.Info("Listing workspaces", zap.String("dir", subDir))
 	var stdout, stderr bytes.Buffer
 	result := pipe.NewPiped("terraform", "workspace", "list").WithDir(filepath.Join(c.Directory, subDir)).Execute(ctx, nil, &stdout, &stderr)
 	if result != nil {

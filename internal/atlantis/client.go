@@ -83,7 +83,7 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 
 	resp, err := c.HTTPClient.Do(httpReq)
 	if err != nil {
-		return nil, fmt.Errorf("error making plan request to %s (%s): %w", destination, resp.Status, err)
+		return nil, fmt.Errorf("error making plan request to %s: %w", destination, err)
 	}
 	var bodyResult command.Result
 	if err := json.NewDecoder(resp.Body).Decode(&bodyResult); err != nil {

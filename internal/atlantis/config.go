@@ -6,9 +6,19 @@ import (
 	"github.com/runatlantis/atlantis/server/core/config/valid"
 	"os"
 	"path/filepath"
+	"sort"
 )
 
 type DirectoriesWithWorkspaces map[string][]string
+
+func (d DirectoriesWithWorkspaces) SortedKeys() []string {
+	keys := make([]string, 0, len(d))
+	for k := range d {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	return keys
+}
 
 func ConfigToWorkspaces(cfg *valid.RepoCfg) DirectoriesWithWorkspaces {
 	workspaces := make(DirectoriesWithWorkspaces)
@@ -22,9 +32,17 @@ func ConfigToWorkspaces(cfg *valid.RepoCfg) DirectoriesWithWorkspaces {
 }
 
 func ParseRepoConfig(body string) (*valid.RepoCfg, error) {
+	t := true
 	var pv config.ParserValidator
-	var vg valid.GlobalCfg
-	vc, err := pv.ParseRepoCfgData([]byte(body), vg, "")
+	vg := valid.GlobalCfg{
+		Repos: []valid.Repo{
+			{
+				ID:                   "terraform",
+				AllowCustomWorkflows: &t,
+			},
+		},
+	}
+	vc, err := pv.ParseRepoCfgData([]byte(body), vg, "terraform")
 	if err != nil {
 		return nil, fmt.Errorf("error parsing config: %s", err)
 	}
