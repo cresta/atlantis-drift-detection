@@ -23,7 +23,7 @@ type config struct {
 	Repo               string   `env:"REPO,required"`
 	AtlantisHostname   string   `env:"ATLANTIS_HOST,required"`
 	AtlantisToken      string   `env:"ATLANTIS_TOKEN,required"`
-	DirectoryWhitelist []string `env:"DIRECTORY_WHITELIST,required"`
+	DirectoryWhitelist []string `env:"DIRECTORY_WHITELIST"`
 	SlackWebhookURL    string   `env:"SLACK_WEBHOOK_URL"`
 	SkipWorkspaceCheck bool     `env:"SKIP_WORKSPACE_CHECK"`
 }
