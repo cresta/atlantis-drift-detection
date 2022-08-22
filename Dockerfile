@@ -6,11 +6,23 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 COPY . .
-RUN go test -v ./...
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o /helm-autoupdate ./cmd/atlantis-drift-detection/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o /atlantis-drift-detection ./cmd/atlantis-drift-detection/main.go
 
-FROM ubuntu:22:10
+FROM ubuntu:22.10
+
+RUN  apt-get update \
+  && apt-get install -y wget unzip git \
+  && rm -rf /var/lib/apt/lists/*
+
+
+ARG TERRAFORM_VERSION=1.2.3
+# Download terraform for linux
+RUN wget --quiet https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+  && unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+  && mv terraform /usr/bin \
+  && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
 COPY --from=build /atlantis-drift-detection /atlantis-drift-detection
 
 ENTRYPOINT ["/atlantis-drift-detection"]

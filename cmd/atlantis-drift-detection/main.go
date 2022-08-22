@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/drifter"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
@@ -10,6 +11,7 @@ import (
 	"github.com/cresta/gogithub"
 	"github.com/joho/godotenv"
 	"net/http"
+	"os"
 
 	// Empty import allows pinning to version atlantis uses
 	_ "github.com/nlopes/slack"
@@ -23,6 +25,17 @@ type config struct {
 	AtlantisToken      string   `env:"ATLANTIS_TOKEN,required"`
 	DirectoryWhitelist []string `env:"DIRECTORY_WHITELIST,required"`
 	SlackWebhookURL    string   `env:"SLACK_WEBHOOK_URL"`
+}
+
+func loadEnvIfExists() error {
+	_, err := os.Stat(".env")
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil
+		}
+		return fmt.Errorf("error checking for .env file: %v", err)
+	}
+	return godotenv.Load()
 }
 
 type zapGogitLogger struct {
@@ -58,7 +71,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	if err := godotenv.Load(); err != nil {
+	if err := loadEnvIfExists(); err != nil {
 		logger.Panic("Failed to load .env", zap.Error(err))
 	}
 	var cfg config
