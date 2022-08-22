@@ -1,11 +1,13 @@
 package atlantis
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/runatlantis/atlantis/server/controllers"
 	"github.com/runatlantis/atlantis/server/events/command"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -85,9 +87,17 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 	if err != nil {
 		return nil, fmt.Errorf("error making plan request to %s: %w", destination, err)
 	}
+	var fullBody bytes.Buffer
+	if _, err := io.Copy(&fullBody, resp.Body); err != nil {
+		return nil, fmt.Errorf("unable to read response body: %w", err)
+	}
+	if err := resp.Body.Close(); err != nil {
+		return nil, fmt.Errorf("unable to close response body: %w", err)
+	}
+
 	var bodyResult command.Result
-	if err := json.NewDecoder(resp.Body).Decode(&bodyResult); err != nil {
-		return nil, fmt.Errorf("error decoding plan response(code:%d): %w", resp.StatusCode, err)
+	if err := json.NewDecoder(&fullBody).Decode(&bodyResult); err != nil {
+		return nil, fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
 	}
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusInternalServerError {
 		return nil, fmt.Errorf("non-200 and non-500 response for %s: %d", destination, resp.StatusCode)

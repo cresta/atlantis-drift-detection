@@ -26,6 +26,7 @@ type config struct {
 	DirectoryWhitelist []string `env:"DIRECTORY_WHITELIST"`
 	SlackWebhookURL    string   `env:"SLACK_WEBHOOK_URL"`
 	SkipWorkspaceCheck bool     `env:"SKIP_WORKSPACE_CHECK"`
+	ParallelRuns       int      `env:"PARALLEL_RUNS"`
 }
 
 func loadEnvIfExists() error {
@@ -88,6 +89,7 @@ func main() {
 		},
 	}
 	if cfg.SlackWebhookURL != "" {
+		logger.Info("setting up slack webhook notification")
 		notif.Notifications = append(notif.Notifications, &notification.SlackWebhook{
 			WebhookURL: cfg.SlackWebhookURL,
 			HTTPClient: http.DefaultClient,
@@ -109,6 +111,7 @@ func main() {
 			Token:            cfg.AtlantisToken,
 			HTTPClient:       http.DefaultClient,
 		},
+		ParallelRuns:       cfg.ParallelRuns,
 		Cloner:             cloner,
 		GithubClient:       ghClient,
 		Terraform:          &tf,

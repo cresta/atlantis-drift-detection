@@ -20,6 +20,13 @@ inputs:
     description: 'If true, skip the workspace/ls check'
     required: false
     default: "false"
+  parallelRuns:
+    description: 'If set, will run this many parallel plan/init commands'
+    required: false
+    default: "1"
+  directoryWhitelist:
+    description: 'If set, will only run for this directory'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -29,3 +36,5 @@ runs:
     REPO: ${{ inputs.repo }}
     SLACK_WEBHOOK_URL: ${{ inputs.slackWebhookURL }}
     SKIP_WORKSPACE_CHECK: ${{ inputs.skipWorkspaceCheck }}
+    DIRECTORY_WHITELIST: ${{ inputs.directoryWhitelist }}
+    PARALLEL_RUNS: ${{ inputs.parallelRuns }}
