@@ -6,6 +6,7 @@ import (
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/drifter"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
+	"github.com/cresta/atlantis-drift-detection/internal/resultcache"
 	"github.com/cresta/atlantis-drift-detection/internal/terraform"
 	"github.com/cresta/gogit"
 	"github.com/cresta/gogithub"
@@ -27,6 +28,7 @@ type config struct {
 	SlackWebhookURL    string   `env:"SLACK_WEBHOOK_URL"`
 	SkipWorkspaceCheck bool     `env:"SKIP_WORKSPACE_CHECK"`
 	ParallelRuns       int      `env:"PARALLEL_RUNS"`
+	DynamodbTable      string   `env:"DYNAMODB_TABLE"`
 }
 
 func loadEnvIfExists() error {
@@ -102,6 +104,13 @@ func main() {
 	tf := terraform.Client{
 		Logger: logger.With(zap.String("terraform", "true")),
 	}
+
+	cache := resultcache.Noop{}
+	if cfg.DynamodbTable != "" {
+		logger.Info("setting up dynamodb result cache")
+		cache = resultcache.NewDynamodb(cfg.DynamodbTable, logger)
+	}
+
 	d := drifter.Drifter{
 		DirectoryWhitelist: cfg.DirectoryWhitelist,
 		Logger:             logger.With(zap.String("drifter", "true")),
@@ -112,6 +121,7 @@ func main() {
 			HTTPClient:       http.DefaultClient,
 		},
 		ParallelRuns:       cfg.ParallelRuns,
+		ResultCache:        cache,
 		Cloner:             cloner,
 		GithubClient:       ghClient,
 		Terraform:          &tf,

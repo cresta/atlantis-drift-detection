@@ -6,6 +6,7 @@ import (
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/atlantisgithub"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
+	"github.com/cresta/atlantis-drift-detection/internal/resultcache"
 	"github.com/cresta/atlantis-drift-detection/internal/terraform"
 	"github.com/cresta/gogit"
 	"github.com/cresta/gogithub"
@@ -21,6 +22,7 @@ type Drifter struct {
 	Terraform          *terraform.Client
 	Notification       notification.Notification
 	AtlantisClient     *atlantis.Client
+	ResultCache        resultcache.ResultCache
 	DirectoryWhitelist []string
 	SkipWorkspaceCheck bool
 	ParallelRuns       int
