@@ -1,4 +1,4 @@
-package resultcache
+package processedcache
 
 import (
 	"context"
@@ -23,7 +23,7 @@ func NewDynamoDB(ctx context.Context, table string) (*DynamoDB, error) {
 		Client: dynamodb.NewFromConfig(cfg),
 		Table:  table,
 	}
-	_, err = c.GetRemoteWorkspaces(ctx, &RemoteWorkspacesKey{Dir: "test"})
+	_, err = c.GetRemoteWorkspaces(ctx, &ConsiderWorkspacesChecked{Dir: "test"})
 	if err != nil {
 		return nil, fmt.Errorf("failed to verify dynamodb cache: %w", err)
 	}
@@ -104,9 +104,9 @@ func (d *DynamoDB) genericStore(ctx context.Context, keyType string, key fmt.Str
 	return nil
 }
 
-func (d *DynamoDB) GetDriftCheckResult(ctx context.Context, key *DriftCheckResultKey) (*DriftCheckResultValue, error) {
-	var ret DriftCheckResultValue
-	if exists, err := d.genericGet(ctx, "DriftCheckResultKey", key, &ret); err != nil {
+func (d *DynamoDB) GetDriftCheckResult(ctx context.Context, key *ConsiderDriftChecked) (*DriftCheckValue, error) {
+	var ret DriftCheckValue
+	if exists, err := d.genericGet(ctx, "ConsiderDriftChecked", key, &ret); err != nil {
 		return nil, err
 	} else if !exists {
 		return nil, nil
@@ -114,17 +114,17 @@ func (d *DynamoDB) GetDriftCheckResult(ctx context.Context, key *DriftCheckResul
 	return &ret, nil
 }
 
-func (d *DynamoDB) DeleteDriftCheckResult(ctx context.Context, key *DriftCheckResultKey) error {
-	return d.genericDelete(ctx, "DriftCheckResultKey", key)
+func (d *DynamoDB) DeleteDriftCheckResult(ctx context.Context, key *ConsiderDriftChecked) error {
+	return d.genericDelete(ctx, "ConsiderDriftChecked", key)
 }
 
-func (d *DynamoDB) StoreDriftCheckResult(ctx context.Context, key *DriftCheckResultKey, value *DriftCheckResultValue) error {
-	return d.genericStore(ctx, "DriftCheckResultKey", key, value)
+func (d *DynamoDB) StoreDriftCheckResult(ctx context.Context, key *ConsiderDriftChecked, value *DriftCheckValue) error {
+	return d.genericStore(ctx, "ConsiderDriftChecked", key, value)
 }
 
-func (d *DynamoDB) GetRemoteWorkspaces(ctx context.Context, key *RemoteWorkspacesKey) (*RemoteWorkspacesValue, error) {
-	var ret RemoteWorkspacesValue
-	if exists, err := d.genericGet(ctx, "RemoteWorkspacesKey", key, &ret); err != nil {
+func (d *DynamoDB) GetRemoteWorkspaces(ctx context.Context, key *ConsiderWorkspacesChecked) (*WorkspacesCheckedValue, error) {
+	var ret WorkspacesCheckedValue
+	if exists, err := d.genericGet(ctx, "ConsiderWorkspacesChecked", key, &ret); err != nil {
 		return nil, err
 	} else if !exists {
 		return nil, nil
@@ -132,12 +132,12 @@ func (d *DynamoDB) GetRemoteWorkspaces(ctx context.Context, key *RemoteWorkspace
 	return &ret, nil
 }
 
-func (d *DynamoDB) StoreRemoteWorkspaces(ctx context.Context, key *RemoteWorkspacesKey, value *RemoteWorkspacesValue) error {
-	return d.genericStore(ctx, "RemoteWorkspacesKey", key, value)
+func (d *DynamoDB) StoreRemoteWorkspaces(ctx context.Context, key *ConsiderWorkspacesChecked, value *WorkspacesCheckedValue) error {
+	return d.genericStore(ctx, "ConsiderWorkspacesChecked", key, value)
 }
 
-func (d *DynamoDB) DeleteRemoteWorkspaces(ctx context.Context, key *RemoteWorkspacesKey) error {
-	return d.genericDelete(ctx, "RemoteWorkspacesKey", key)
+func (d *DynamoDB) DeleteRemoteWorkspaces(ctx context.Context, key *ConsiderWorkspacesChecked) error {
+	return d.genericDelete(ctx, "ConsiderWorkspacesChecked", key)
 }
 
-var _ ResultCache = &DynamoDB{}
+var _ ProcessedCache = &DynamoDB{}

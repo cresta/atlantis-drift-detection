@@ -1,4 +1,4 @@
-package resultcache
+package processedcache
 
 import (
 	"context"
@@ -7,13 +7,13 @@ import (
 	"time"
 )
 
-func GenericCacheWorkflowTest(t *testing.T, cache ResultCache) {
+func GenericCacheWorkflowTest(t *testing.T, cache ProcessedCache) {
 	currentTime := time.Now().Round(time.Millisecond)
-	testKey := &DriftCheckResultKey{
+	testKey := &ConsiderDriftChecked{
 		Dir:       "test" + currentTime.String(),
 		Workspace: "test",
 	}
-	testValue := &DriftCheckResultValue{
+	testValue := &DriftCheckValue{
 		Error: "test",
 		Drift: true,
 		When:  currentTime,

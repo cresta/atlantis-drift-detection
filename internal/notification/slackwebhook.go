@@ -13,6 +13,16 @@ type SlackWebhook struct {
 	HTTPClient *http.Client
 }
 
+func NewSlackWebhook(webhookURL string, HTTPClient *http.Client) *SlackWebhook {
+	if webhookURL == "" {
+		return nil
+	}
+	return &SlackWebhook{
+		WebhookURL: webhookURL,
+		HTTPClient: HTTPClient,
+	}
+}
+
 type SlackWebhookMessage struct {
 	Text string `json:"text"`
 }

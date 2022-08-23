@@ -6,13 +6,14 @@ import (
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/drifter"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
-	"github.com/cresta/atlantis-drift-detection/internal/resultcache"
+	"github.com/cresta/atlantis-drift-detection/internal/processedcache"
 	"github.com/cresta/atlantis-drift-detection/internal/terraform"
 	"github.com/cresta/gogit"
 	"github.com/cresta/gogithub"
 	"github.com/joho/godotenv"
 	"net/http"
 	"os"
+	"time"
 
 	// Empty import allows pinning to version atlantis uses
 	_ "github.com/nlopes/slack"
@@ -21,14 +22,19 @@ import (
 import "github.com/joeshaw/envdecode"
 
 type config struct {
-	Repo               string   `env:"REPO,required"`
-	AtlantisHostname   string   `env:"ATLANTIS_HOST,required"`
-	AtlantisToken      string   `env:"ATLANTIS_TOKEN,required"`
-	DirectoryWhitelist []string `env:"DIRECTORY_WHITELIST"`
-	SlackWebhookURL    string   `env:"SLACK_WEBHOOK_URL"`
-	SkipWorkspaceCheck bool     `env:"SKIP_WORKSPACE_CHECK"`
-	ParallelRuns       int      `env:"PARALLEL_RUNS"`
-	DynamodbTable      string   `env:"DYNAMODB_TABLE"`
+	Repo               string        `env:"REPO,required"`
+	AtlantisHostname   string        `env:"ATLANTIS_HOST,required"`
+	AtlantisToken      string        `env:"ATLANTIS_TOKEN,required"`
+	DirectoryWhitelist []string      `env:"DIRECTORY_WHITELIST"`
+	SlackWebhookURL    string        `env:"SLACK_WEBHOOK_URL"`
+	SkipWorkspaceCheck bool          `env:"SKIP_WORKSPACE_CHECK"`
+	ParallelRuns       int           `env:"PARALLEL_RUNS"`
+	DynamodbTable      string        `env:"DYNAMODB_TABLE"`
+	CacheValidDuration time.Duration `env:"CACHE_VALID_DURATION,default=24h"`
+	WorkflowOwner      string        `env:"WORKFLOW_OWNER"`
+	WorkflowRepo       string        `env:"WORKFLOW_REPO"`
+	WorkflowId         string        `env:"WORKFLOW_ID"`
+	WorkflowRef        string        `env:"WORKFLOW_REF"`
 }
 
 func loadEnvIfExists() error {
@@ -90,25 +96,29 @@ func main() {
 			&notification.Zap{Logger: logger.With(zap.String("notification", "true"))},
 		},
 	}
-	if cfg.SlackWebhookURL != "" {
+	if slackClient := notification.NewSlackWebhook(cfg.SlackWebhookURL, http.DefaultClient); slackClient != nil {
 		logger.Info("setting up slack webhook notification")
-		notif.Notifications = append(notif.Notifications, &notification.SlackWebhook{
-			WebhookURL: cfg.SlackWebhookURL,
-			HTTPClient: http.DefaultClient,
-		})
+		notif.Notifications = append(notif.Notifications, slackClient)
 	}
 	ghClient, err := gogithub.NewGQLClient(ctx, logger, nil)
 	if err != nil {
 		logger.Panic("failed to create github client", zap.Error(err))
 	}
+	if workflowClient := notification.NewWorkflow(ghClient, cfg.WorkflowOwner, cfg.WorkflowRepo, cfg.WorkflowId, cfg.WorkflowRef); workflowClient != nil {
+		logger.Info("setting up workflow notification")
+		notif.Notifications = append(notif.Notifications, workflowClient)
+	}
 	tf := terraform.Client{
 		Logger: logger.With(zap.String("terraform", "true")),
 	}
 
-	cache := resultcache.Noop{}
+	var cache processedcache.ProcessedCache = processedcache.Noop{}
 	if cfg.DynamodbTable != "" {
 		logger.Info("setting up dynamodb result cache")
-		cache = resultcache.NewDynamodb(cfg.DynamodbTable, logger)
+		cache, err = processedcache.NewDynamoDB(ctx, cfg.DynamodbTable)
+		if err != nil {
+			logger.Panic("failed to create dynamodb result cache", zap.Error(err))
+		}
 	}
 
 	d := drifter.Drifter{
@@ -124,6 +134,7 @@ func main() {
 		ResultCache:        cache,
 		Cloner:             cloner,
 		GithubClient:       ghClient,
+		CacheValidDuration: cfg.CacheValidDuration,
 		Terraform:          &tf,
 		Notification:       notif,
 		SkipWorkspaceCheck: cfg.SkipWorkspaceCheck,
