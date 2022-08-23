@@ -27,6 +27,21 @@ inputs:
   directoryWhitelist:
     description: 'If set, will only run for this directory'
     required: false
+  dynamodbTable:
+    description: 'If set, will cache results in dynamodb'
+    required: false
+  workflowOwner:
+    description: 'If set, will run this workflow on drifts.  Example: "cresta"'
+    required: false
+  workflowRepo:
+    description: 'If set, will run this workflow on drifts.  Example: "terraform-repo"'
+    required: false
+  workflowId:
+    description: 'If set, will run this workflow on drifts.  Example: "drift.yaml"'
+    required: false
+  workflowRef:
+    description: 'If set, will run this workflow on this branch.  Example: "master"'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -38,3 +53,8 @@ runs:
     SKIP_WORKSPACE_CHECK: ${{ inputs.skipWorkspaceCheck }}
     DIRECTORY_WHITELIST: ${{ inputs.directoryWhitelist }}
     PARALLEL_RUNS: ${{ inputs.parallelRuns }}
+    DYNAMODB_TABLE: ${{ inputs.dynamodbTable }}
+    WORKFLOW_OWNER: ${{ inputs.workflowOwner }}
+    WORKFLOW_REPO: ${{ inputs.workflowRepo }}
+    WORKFLOW_ID: ${{ inputs.workflowId }}
+    WORKFLOW_REF: ${{ inputs.workflowRef }}
