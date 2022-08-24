@@ -116,8 +116,8 @@ github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDk
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cresta/gogit v0.0.2 h1:2BnStBNrobXUMMHBirDWdI+Qsn9zPdX+techdazJ6vY=
 github.com/cresta/gogit v0.0.2/go.mod h1:01jDOWO3EkvsL+ybYMWeXrHbp1t4wUHrZGPfJTj7m7w=
-github.com/cresta/gogithub v0.1.2 h1:3jGyTp4Yzgo+FGFHZ1glouAo81PTaEbtC/yOEYEsD58=
-github.com/cresta/gogithub v0.1.2/go.mod h1:KRrXYFO3AgFtY5s6M7yo5KKMWldr+d1rFktJJ//thww=
+github.com/cresta/gogithub v0.1.3 h1:CJJ16ksZu7TodjmXBLTIMPmGvRv1yKPwB0Tpxc6Xq/A=
+github.com/cresta/gogithub v0.1.3/go.mod h1:KRrXYFO3AgFtY5s6M7yo5KKMWldr+d1rFktJJ//thww=
 github.com/cresta/pipe v0.0.1 h1:LsAAmKqt0CLQ6OJgTcmk5xCAHlX+VFLE5xr/LG1OHMA=
 github.com/cresta/pipe v0.0.1/go.mod h1:4FI1ZPReIyNl1t+KkYVVI2a5ML+iNlO94kJ+Mk6MukE=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
