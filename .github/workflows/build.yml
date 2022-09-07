@@ -25,6 +25,7 @@ jobs:
         uses: golangci/golangci-lint-action@v2
         with:
           version: latest
+          args: "--timeout 5m"
       - name: Build
         run: go build -mod=readonly ./cmd/atlantis-drift-detection/main.go
       - name: Verify
