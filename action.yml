@@ -3,58 +3,6 @@ description: 'Some automation to detect drift inside atlantis via the remote /pl
 branding:
   icon: 'activity'
   color: 'blue'
-inputs:
-  atlantisHost:
-    description: 'Atlantis hostname with protocol.  Example: "https://atlantis.company.com'
-    required: true
-  atlantisToken:
-    description: 'Atlantis API token'
-    required: true
-  repo:
-    description: 'Repository to check'
-    required: true
-  slackWebhookURL:
-    description: 'Slack webhook URL to send notifications to'
-    required: false
-  skipWorkspaceCheck:
-    description: 'If true, skip the workspace/ls check'
-    required: false
-    default: "false"
-  parallelRuns:
-    description: 'If set, will run this many parallel plan/init commands'
-    required: false
-    default: "1"
-  directoryWhitelist:
-    description: 'If set, will only run for this directory'
-    required: false
-  dynamodbTable:
-    description: 'If set, will cache results in dynamodb'
-    required: false
-  workflowOwner:
-    description: 'If set, will run this workflow on drifts.  Example: "cresta"'
-    required: false
-  workflowRepo:
-    description: 'If set, will run this workflow on drifts.  Example: "terraform-repo"'
-    required: false
-  workflowId:
-    description: 'If set, will run this workflow on drifts.  Example: "drift.yaml"'
-    required: false
-  workflowRef:
-    description: 'If set, will run this workflow on this branch.  Example: "master"'
-    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  env:
-    ATLANTIS_HOST: ${{ inputs.atlantisHost }}
-    ATLANTIS_TOKEN: ${{ inputs.atlantisToken }}
-    REPO: ${{ inputs.repo }}
-    SLACK_WEBHOOK_URL: ${{ inputs.slackWebhookURL }}
-    SKIP_WORKSPACE_CHECK: ${{ inputs.skipWorkspaceCheck }}
-    DIRECTORY_WHITELIST: ${{ inputs.directoryWhitelist }}
-    PARALLEL_RUNS: ${{ inputs.parallelRuns }}
-    DYNAMODB_TABLE: ${{ inputs.dynamodbTable }}
-    WORKFLOW_OWNER: ${{ inputs.workflowOwner }}
-    WORKFLOW_REPO: ${{ inputs.workflowRepo }}
-    WORKFLOW_ID: ${{ inputs.workflowId }}
-    WORKFLOW_REF: ${{ inputs.workflowRef }}
