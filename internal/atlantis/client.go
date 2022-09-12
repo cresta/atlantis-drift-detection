@@ -56,6 +56,19 @@ func (p *PlanResult) IsLocked() bool {
 	return true
 }
 
+type possiblyTemporaryError struct {
+	error
+}
+
+type TemporaryError interface {
+	Temporary() bool
+	error
+}
+
+func (p *possiblyTemporaryError) Temporary() bool {
+	return true
+}
+
 func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*PlanResult, error) {
 	planBody := controllers.APIRequest{
 		Repository: req.Repo,
@@ -97,7 +110,11 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 
 	var bodyResult command.Result
 	if err := json.NewDecoder(&fullBody).Decode(&bodyResult); err != nil {
-		return nil, fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
+		retErr := fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
+		if resp.StatusCode == http.StatusServiceUnavailable {
+			return nil, &possiblyTemporaryError{retErr}
+		}
+		return nil, retErr
 	}
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusInternalServerError {
 		return nil, fmt.Errorf("non-200 and non-500 response for %s: %d", destination, resp.StatusCode)

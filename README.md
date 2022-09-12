@@ -66,3 +66,9 @@ jobs:
 | `GITHUB_APP_ID`          | An application ID to use for github API calls                                    | No       |                            | `123123`                                                            |
 | `GITHUB_INSTALLATION_ID` | An application install ID to use for github API calls                            | No       |                            | `123123`                                                            |
 | `GITHUB_PEM_KEY`         | A GitHub PEM key of an application, used to authenticate the app for API calls   | No       |                            | `1231DEADBEAF....`                                                  |
+
+# Local development
+
+Create a file named `.env` inside the root directory and populate it with the correct variables.
+Check out the [example file](.example.env) or [configuration](#configuration) for details.
+This file is inside the [.gitignore](.gitignore) so it won't be checked in.
