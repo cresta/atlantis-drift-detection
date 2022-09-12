@@ -70,5 +70,5 @@ jobs:
 # Local development
 
 Create a file named `.env` inside the root directory and populate it with the correct variables.
-Check out the [example file](.example.env) or [configuration](#configuration) for details.
-This file is inside the [.gitignore](.gitignore) so it won't be checked in.
+Check out the [example file](example.env) or [configuration](#configuration) for details.
+This file  won't be checked in because it's inside the [.gitignore](.gitignore).
