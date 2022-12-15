@@ -16,6 +16,65 @@ The general workflow of this repository is:
 
 There is an optional flag to cache drift results inside DynamoDB so we don't check the same directory twice in a short period of time.
 
+# Example for "Trigger a github workflow that can resolve the drift"
+
+Here is the example we use to resolve a drift.  This workflow touches a "trigger.txt" file that we configure all
+of our projects to listen to.
+
+```yaml
+name: Force a terraform PR
+on:
+  workflow_dispatch:
+    inputs:
+      directory:
+        description: >-
+          Which directory to force a terraform workflow upon
+        required: true
+        type: string
+jobs:
+  plantrigger:
+    runs-on: [self-hosted]
+    name: Force terraform plan PR
+    steps:
+      # We use an application to make PRs, rather than hard code a user token
+      - name: Generate token
+        id: generate_token
+        uses: peter-murray/workflow-application-token-action@v1
+        with:
+          application_id: $ {{ secrets.OUR_APP_ID_FOR_CREATING_PRS }}
+          application_private_key: ${{ secrets.OUR_PEM_ID_FOR_CREATING_PRS }}
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: ./scripts/update_trigger.sh ${DIR}
+        env:
+          DIR: ${{ github.event.inputs.directory }}
+      - name: Create PR to terraform repo
+        uses: peter-evans/create-pull-request@v3
+        id: make-pr
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+          branch: replan-${{ github.event.inputs.directory }}
+          delete-branch: true
+          title: "Force replan of directory ${{ github.event.inputs.directory }}"
+          labels: forced-workflow
+          committer: Forced Replan <noreply@cresta.ai>
+          body: "A forced replan of this directory was triggered via github actions"
+          commit-message: "Regenerated plan for ${{ github.event.inputs.directory }}"
+```
+
+Our script update_trigger.sh
+```bash
+#!/bin/bash
+set -exou pipefail
+# Modify the trigger.txt file of a directory which we expect to trigger an atlantis workflow
+if [ ! -d "$1" ]; then
+  echo "Unable to find directory $1"
+  exit 1
+fi
+date > "$1/trigger.txt"
+```
+
+
 # Use as a github action
 
 ```yaml
