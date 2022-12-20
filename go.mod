@@ -11,7 +11,7 @@ require (
 	github.com/cresta/pipe v0.0.1
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.4.0
-	github.com/nlopes/slack v0.4.0
+	github.com/nlopes/slack v0.6.0
 	github.com/runatlantis/atlantis v0.19.8
 	github.com/stretchr/testify v1.8.0
 	go.uber.org/zap v1.22.0
