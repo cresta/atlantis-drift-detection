@@ -2,6 +2,7 @@ package drifter
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/atlantisgithub"
@@ -149,6 +150,11 @@ func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.Directo
 					Workspace: workspace,
 				})
 				if err != nil {
+					var tmp atlantis.TemporaryError
+					if errors.As(err, &tmp) && tmp.Temporary() {
+						d.Logger.Warn("Temporary error.  Will try again later.", zap.Error(err))
+						continue
+					}
 					return fmt.Errorf("failed to get plan summary for (%s#%s): %w", dir, workspace, err)
 				}
 				if err := d.ResultCache.StoreDriftCheckResult(ctx, cacheKey, &processedcache.DriftCheckValue{
