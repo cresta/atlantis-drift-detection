@@ -1,7 +1,6 @@
 package atlantis
 
 import (
-	"github.com/runatlantis/atlantis/server/core/config"
 	"github.com/stretchr/testify/require"
 	"os"
 	"path/filepath"
@@ -62,7 +61,7 @@ func TestParseRepoConfigFromDir(t *testing.T) {
 		err := os.RemoveAll(path)
 		require.NoError(t, err)
 	}(dirName)
-	fp := filepath.Join(dirName, config.AtlantisYAMLFilename)
+	fp := filepath.Join(dirName, "atlantis.yaml")
 	require.NoError(t, os.WriteFile(fp, []byte(exampleAtlantis), 0644))
 	cfg, err := ParseRepoConfigFromDir(dirName)
 	require.NoError(t, err)

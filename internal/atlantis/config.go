@@ -2,13 +2,13 @@ package atlantis
 
 import (
 	"fmt"
-	"github.com/runatlantis/atlantis/server/core/config"
-	"github.com/runatlantis/atlantis/server/core/config/valid"
-	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/runatlantis/atlantis/server/core/config/valid"
+	"gopkg.in/yaml.v3"
 )
 
 type DirectoriesWithWorkspaces map[string][]string
@@ -47,7 +47,7 @@ func ParseRepoConfig(body string) (*SimpleAtlantisConfig, error) {
 }
 
 func ParseRepoConfigFromDir(dir string) (*SimpleAtlantisConfig, error) {
-	filename := filepath.Join(dir, config.AtlantisYAMLFilename)
+	filename := filepath.Join(dir, "atlantis.yaml")
 	body, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, fmt.Errorf("error reading config: %s", err)
