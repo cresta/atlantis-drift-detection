@@ -8,13 +8,13 @@ The general workflow of this repository is:
 2. Find an atlantis.yaml file inside the repository
 3. Use atlantis to run /plan on each project in the atlantis.yaml file
 4. For each project with drift
-    1. Trigger a github workflow that can resolve the drift
-    2. Comment the existance of the drift in slack
-5. For each project directory in the atlantis.yamnl
+    1. Trigger a GitHub workflow that can resolve the drift
+    2. Comment the existence of the drift in slack
+5. For each project directory in the atlantis.yaml
    1. Run workspace list
    2. If any workspace isn't tracked by atlantis, notify slack
 
-There is an optional flag to cache drift results inside DynamoDB so we don't check the same directory twice in a short period of time.
+There is an optional flag to cache drift results inside DynamoDB, so we don't check the same directory twice in a short period of time.
 
 # Example for "Trigger a github workflow that can resolve the drift"
 
