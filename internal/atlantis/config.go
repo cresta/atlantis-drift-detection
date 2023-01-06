@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"github.com/runatlantis/atlantis/server/core/config"
 	"github.com/runatlantis/atlantis/server/core/config/valid"
+	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 )
 
 type DirectoriesWithWorkspaces map[string][]string
@@ -20,7 +22,7 @@ func (d DirectoriesWithWorkspaces) SortedKeys() []string {
 	return keys
 }
 
-func ConfigToWorkspaces(cfg *valid.RepoCfg) DirectoriesWithWorkspaces {
+func ConfigToWorkspaces(cfg *SimpleAtlantisConfig) DirectoriesWithWorkspaces {
 	workspaces := make(DirectoriesWithWorkspaces)
 	for _, p := range cfg.Projects {
 		if _, exists := workspaces[p.Dir]; !exists {
@@ -31,25 +33,20 @@ func ConfigToWorkspaces(cfg *valid.RepoCfg) DirectoriesWithWorkspaces {
 	return workspaces
 }
 
-func ParseRepoConfig(body string) (*valid.RepoCfg, error) {
-	t := true
-	var pv config.ParserValidator
-	vg := valid.GlobalCfg{
-		Repos: []valid.Repo{
-			{
-				ID:                   "terraform",
-				AllowCustomWorkflows: &t,
-			},
-		},
-	}
-	vc, err := pv.ParseRepoCfgData([]byte(body), vg, "terraform")
-	if err != nil {
-		return nil, fmt.Errorf("error parsing config: %s", err)
-	}
-	return &vc, nil
+type SimpleAtlantisConfig struct {
+	Version  int
+	Projects []valid.Project
 }
 
-func ParseRepoConfigFromDir(dir string) (*valid.RepoCfg, error) {
+func ParseRepoConfig(body string) (*SimpleAtlantisConfig, error) {
+	var ret SimpleAtlantisConfig
+	if err := yaml.NewDecoder(strings.NewReader(body)).Decode(&ret); err != nil {
+		return nil, fmt.Errorf("error parsing config: %s", err)
+	}
+	return &ret, nil
+}
+
+func ParseRepoConfigFromDir(dir string) (*SimpleAtlantisConfig, error) {
 	filename := filepath.Join(dir, config.AtlantisYAMLFilename)
 	body, err := os.ReadFile(filename)
 	if err != nil {

@@ -26,6 +26,35 @@ projects:
     - '*.tf'
 `
 
+const exampleFromGithubIssue = `version: 3
+automerge: true
+delete_source_branch_on_merge: true
+parallel_plan: true
+parallel_apply: true
+allowed_regexp_prefixes:
+- lab/
+- staging/
+- prod/
+projects:
+- name: pepe-ue2-lab-cloudtrail
+  workspace: pepe-ue2-lab
+  workflow: workflow-1
+  dir: components/terraform/cloudtrail
+  terraform_version: v1.2.9
+  delete_source_branch_on_merge: false
+  autoplan:
+    enabled: true
+    when_modified:
+    - '**/*.tf'
+    - $PROJECT_NAME.tfvars.json
+  apply_requirements:
+  - approved`
+
+func TestParseRepoConfig(t *testing.T) {
+	_, err := ParseRepoConfig(exampleFromGithubIssue)
+	require.NoError(t, err)
+}
+
 func TestParseRepoConfigFromDir(t *testing.T) {
 	dirName, err := os.MkdirTemp("", "config-test")
 	require.NoError(t, err)
