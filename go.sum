@@ -212,8 +212,8 @@ github.com/google/go-github/v29 v29.0.3 h1:IktKCTwU//aFHnpA+2SLIi7Oo9uhAzgsdZNbc
 github.com/google/go-github/v29 v29.0.3/go.mod h1:CHKiKKPHJ0REzfwc14QMklvtHwCveD0PxlMjLlzAM5E=
 github.com/google/go-github/v45 v45.2.0 h1:5oRLszbrkvxDDqBCNj2hjDZMKmvexaZ1xw/FCD+K3FI=
 github.com/google/go-github/v45 v45.2.0/go.mod h1:FObaZJEDSTa/WGCzZ2Z3eoCDXWJKMenWWTrd8jrta28=
-github.com/google/go-github/v48 v48.2.0 h1:68puzySE6WqUY9KWmpOsDEQfDZsso98rT6pZcz9HqcE=
-github.com/google/go-github/v48 v48.2.0/go.mod h1:dDlehKBDo850ZPvCTK0sEqTCVWcrGl2LcDiajkYi89Y=
+github.com/google/go-github/v49 v49.0.0 h1:vSz1fnOeGztFxDe48q0RCOrd8Cg4o8INcZBPVpGPNaY=
+github.com/google/go-github/v49 v49.0.0/go.mod h1:MUUzHPrhGniB6vUKa27y37likpipzG+BXXJbG04J334=
 github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/google/go-querystring v1.1.0 h1:AnCroh3fv4ZBgVIf1Iwtovgjaw/GiKJo8M8yD/fhyJ8=
 github.com/google/go-querystring v1.1.0/go.mod h1:Kcdr2DB4koayq7X8pmAG4sNG59So17icRSOU623lUBU=
@@ -402,8 +402,8 @@ github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTE
 github.com/rogpeppe/go-internal v1.8.0/go.mod h1:WmiCO8CzOY8rg0OYDC4/i/2WRWAB6poM+XZ2dLUbcbE=
 github.com/rogpeppe/go-internal v1.8.1 h1:geMPLpDpQOgVyCg5z5GoRwLHepNdb71NXb67XFkP+Eg=
 github.com/rogpeppe/go-internal v1.8.1/go.mod h1:JeRgkft04UBgHMgCIwADu4Pn6Mtm5d4nPKWu0nJ5d+o=
-github.com/runatlantis/atlantis v0.22.1 h1:CP4zcFntTnpPWjB3IHeg5HTYMry9qsv9UvSeWGrDLio=
-github.com/runatlantis/atlantis v0.22.1/go.mod h1:NFA0ZhL0N5RQPFRZmVIcNEj/urYaz9jlsHlp4ILCfmE=
+github.com/runatlantis/atlantis v0.22.2 h1:rhkbaQgNXq+7XmNOObkHJKBp8WhK2YWaH7jHPIGYOfQ=
+github.com/runatlantis/atlantis v0.22.2/go.mod h1:vt7t6EZi7k9ewI1L1M1p6p1gld0VlBzCz3rUZGX8skw=
 github.com/sergi/go-diff v1.0.0 h1:Kpca3qRNrduNnOQeazBd0ysaKrUJiIuISHxogkT9RPQ=
 github.com/shopspring/decimal v1.2.0/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
