@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>cresta/renovate-config"
-  ],
-  "automerge": true
+    "local>cresta/renovate-config",
+    "local>cresta/renovate-config:automerge-minor"
+  ]
 }
