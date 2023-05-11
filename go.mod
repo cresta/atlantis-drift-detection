@@ -47,7 +47,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation v1.1.1 // indirect
 	github.com/bradleyfalzon/ghinstallation/v2 v2.3.0 // indirect
 	github.com/cactus/go-statsd-client/statsd v0.0.0-20200623234511-94959e3146b2 // indirect
-	github.com/cloudflare/circl v1.1.0 // indirect
+	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible // indirect
