@@ -9,7 +9,7 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux go build -a -tags netgo -ldflags '-w' -o /atlantis-drift-detection ./cmd/atlantis-drift-detection/main.go
 
-FROM public.ecr.aws/docker/library/ubuntu:23.04
+FROM public.ecr.aws/docker/library/ubuntu:23.10
 
 RUN  apt-get update \
   && apt-get install -y wget unzip git \
