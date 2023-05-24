@@ -12,7 +12,7 @@ require (
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
-	github.com/runatlantis/atlantis v0.24.0
+	github.com/runatlantis/atlantis v0.24.1
 	github.com/stretchr/testify v1.8.3
 	go.uber.org/zap v1.24.0
 	golang.org/x/sync v0.2.0
@@ -74,7 +74,7 @@ require (
 	github.com/hashicorp/go-version v1.6.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.16.2 // indirect
-	github.com/hashicorp/terraform-config-inspect v0.0.0-20230413234026-f1617e8a5fcc // indirect
+	github.com/hashicorp/terraform-config-inspect v0.0.0-20230522202058-dbe9bfcbfe7a // indirect
 	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
