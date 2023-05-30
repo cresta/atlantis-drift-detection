@@ -13,7 +13,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
 	github.com/runatlantis/atlantis v0.24.1
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	go.uber.org/zap v1.24.0
 	golang.org/x/sync v0.2.0
 	gopkg.in/yaml.v3 v3.0.1
