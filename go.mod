@@ -3,7 +3,7 @@ module github.com/cresta/atlantis-drift-detection
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go-v2/config v1.22.0
+	github.com/aws/aws-sdk-go-v2/config v1.22.1
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.12.0
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.25.0
 	github.com/cresta/gogit v0.0.2
