@@ -16,13 +16,15 @@ RUN  apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 
+ARG TARGETPLATFORM
 ARG TERRAFORM_VERSION=1.2.3
 # Download terraform for linux
-RUN wget --quiet https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
-  && unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+RUN TFARCH=${TARGETPLATFORM}; if [ \"$TFARCH\" = \"linux/arm64\" ]; then TFARCH=arm64; fi; \
+  wget --quiet https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TFARCH}.zip \
+  && unzip terraform_${TERRAFORM_VERSION}_linux_${TFARCH}.zip \
   && mv terraform /usr/bin \
-  && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+  && rm terraform_${TERRAFORM_VERSION}_linux_${TFARCH}.zip
 
-COPY --from=build /atlantis-drift-detection /atlantis-drift-detection
+ COPY --from=build /atlantis-drift-detection /atlantis-drift-detection
 
-ENTRYPOINT ["/atlantis-drift-detection"]
+ ENTRYPOINT ["/atlantis-drift-detection"]
