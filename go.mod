@@ -4,8 +4,8 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.25.10
-	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.12.7
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.26.1
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.12.8
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.26.2
 	github.com/cresta/gogit v0.0.2
 	github.com/cresta/gogithub v0.1.3
 	github.com/cresta/pipe v0.0.1
@@ -35,7 +35,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.7.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.18.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.10.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.8.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.8.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.10.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.18.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.21.1 // indirect
