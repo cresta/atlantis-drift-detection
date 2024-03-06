@@ -4,8 +4,8 @@ go 1.22.0
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.27.6
-	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.13.7
-	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.30.2
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.13.8
+	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.30.3
 	github.com/cresta/gogit v0.0.2
 	github.com/cresta/gogithub v0.1.4
 	github.com/cresta/pipe v0.0.1
