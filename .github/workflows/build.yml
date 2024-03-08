@@ -54,6 +54,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
+            type=semver,pattern={{major}},enable=${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
           images: |
             ghcr.io/cresta/atlantis-drift-detection
       - name: Build and push
