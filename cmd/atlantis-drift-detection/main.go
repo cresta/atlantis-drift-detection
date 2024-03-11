@@ -3,6 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/drifter"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
@@ -11,9 +15,6 @@ import (
 	"github.com/cresta/gogit"
 	"github.com/cresta/gogithub"
 	"github.com/joho/godotenv"
-	"net/http"
-	"os"
-	"time"
 
 	// Empty import allows pinning to version atlantis uses
 	_ "github.com/nlopes/slack"
@@ -100,7 +101,11 @@ func main() {
 		logger.Info("setting up slack webhook notification")
 		notif.Notifications = append(notif.Notifications, slackClient)
 	}
-	ghClient, err := gogithub.NewGQLClient(ctx, logger, nil)
+	var existingConfig *gogithub.NewGQLClientConfig
+	if os.Getenv("GITHUB_TOKEN") != "" {
+		existingConfig = &gogithub.NewGQLClientConfig{Token: os.Getenv("GITHUB_TOKEN")}
+	}
+	ghClient, err := gogithub.NewGQLClient(ctx, logger, existingConfig)
 	if err != nil {
 		logger.Panic("failed to create github client", zap.Error(err))
 	}
