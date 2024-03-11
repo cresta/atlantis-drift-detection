@@ -6,6 +6,15 @@ type Multi struct {
 	Notifications []Notification
 }
 
+func (m *Multi) TemporaryError(ctx context.Context, dir string, workspace string, err error) error {
+	for _, n := range m.Notifications {
+		if err := n.TemporaryError(ctx, dir, workspace, err); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (m *Multi) ExtraWorkspaceInRemote(ctx context.Context, dir string, workspace string) error {
 	for _, n := range m.Notifications {
 		if err := n.ExtraWorkspaceInRemote(ctx, dir, workspace); err != nil {

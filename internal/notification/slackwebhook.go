@@ -13,6 +13,10 @@ type SlackWebhook struct {
 	HTTPClient *http.Client
 }
 
+func (s *SlackWebhook) TemporaryError(ctx context.Context, dir string, workspace string, err error) error {
+	return s.sendSlackMessage(ctx, fmt.Sprintf("Unknown error in remote\nDirectory: %s\nWorkspace: %s\nError: %s", dir, workspace, err.Error()))
+}
+
 func NewSlackWebhook(webhookURL string, HTTPClient *http.Client) *SlackWebhook {
 	if webhookURL == "" {
 		return nil

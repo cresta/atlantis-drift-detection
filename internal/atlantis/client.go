@@ -5,11 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/runatlantis/atlantis/server/controllers"
-	"github.com/runatlantis/atlantis/server/events/command"
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/runatlantis/atlantis/server/controllers"
+	"github.com/runatlantis/atlantis/server/events/command"
 )
 
 type Client struct {
@@ -65,6 +66,10 @@ type TemporaryError interface {
 	error
 }
 
+type errorResponse struct {
+	Error string `json:"error"`
+}
+
 func (p *possiblyTemporaryError) Temporary() bool {
 	return true
 }
@@ -107,11 +112,20 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 	if err := resp.Body.Close(); err != nil {
 		return nil, fmt.Errorf("unable to close response body: %w", err)
 	}
+	if resp.StatusCode == http.StatusUnauthorized {
+		var errResp errorResponse
+		if err := json.NewDecoder(&fullBody).Decode(&errResp); err != nil {
+			return nil, fmt.Errorf("unauthorized request to %s: %w", destination, err)
+		}
+		return nil, fmt.Errorf("unauthorized request to %s: %s", destination, errResp.Error)
+	}
 
 	var bodyResult command.Result
 	if err := json.NewDecoder(&fullBody).Decode(&bodyResult); err != nil {
 		retErr := fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
-		if resp.StatusCode == http.StatusServiceUnavailable {
+		if resp.StatusCode == http.StatusServiceUnavailable || resp.StatusCode == http.StatusInternalServerError {
+			// This is a bit of a hack, but atlantis sometimes returns errors we can't fully process. These could be
+			// because the workspace won't apply, or because the service is just overloaded.  We cannot tell.
 			return nil, &possiblyTemporaryError{retErr}
 		}
 		return nil, retErr

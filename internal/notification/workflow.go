@@ -2,8 +2,9 @@ package notification
 
 import (
 	"context"
-	"github.com/cresta/gogithub"
 	"sync"
+
+	"github.com/cresta/gogithub"
 )
 
 func NewWorkflow(ghClient gogithub.GitHub, owner string, repo string, id string, ref string) *Workflow {
@@ -30,11 +31,16 @@ type Workflow struct {
 	directoriesDone map[string]struct{}
 }
 
-func (w *Workflow) ExtraWorkspaceInRemote(ctx context.Context, dir string, workspace string) error {
+func (w *Workflow) TemporaryError(_ context.Context, _ string, _ string, _ error) error {
+	// Ignored
 	return nil
 }
 
-func (w *Workflow) MissingWorkspaceInRemote(ctx context.Context, dir string, workspace string) error {
+func (w *Workflow) ExtraWorkspaceInRemote(_ context.Context, _ string, _ string) error {
+	return nil
+}
+
+func (w *Workflow) MissingWorkspaceInRemote(_ context.Context, _ string, _ string) error {
 	return nil
 }
 

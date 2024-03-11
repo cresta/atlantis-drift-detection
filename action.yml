@@ -7,4 +7,4 @@ runs:
   using: 'docker'
   # TODO: Figure out a way to auto update this. It's very useful for speeding up the action to not have it build the
   # container each run
-  image: 'docker://ghcr.io/cresta/atlantis-drift-detection:v0.0.11'
+  image: 'docker://ghcr.io/cresta/atlantis-drift-detection:v1'
