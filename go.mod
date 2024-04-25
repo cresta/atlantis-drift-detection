@@ -12,7 +12,7 @@ require (
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
-	github.com/runatlantis/atlantis v0.27.2
+	github.com/runatlantis/atlantis v0.27.3
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.7.0
@@ -104,13 +104,13 @@ require (
 	github.com/uber-go/tally/v4 v4.1.11 // indirect
 	github.com/ulikunitz/xz v0.5.11 // indirect
 	github.com/warrensbox/terraform-switcher v0.1.1-0.20230206012955-d7dfd1b44605 // indirect
-	github.com/xanzy/go-gitlab v0.99.0 // indirect
+	github.com/xanzy/go-gitlab v0.100.0 // indirect
 	github.com/zclconf/go-cty v1.14.3 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/mod v0.16.0 // indirect
-	golang.org/x/net v0.22.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/oauth2 v0.18.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
