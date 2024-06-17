@@ -58,7 +58,7 @@ jobs:
           images: |
             ghcr.io/cresta/atlantis-drift-detection
       - name: Build and push
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           # Push only if tag
           push: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
