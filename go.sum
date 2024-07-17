@@ -344,8 +344,8 @@ github.com/remeh/sizedwaitgroup v1.0.0 h1:VNGGFwNo/R5+MJBf6yrsr110p0m4/OX4S3DCy7
 github.com/remeh/sizedwaitgroup v1.0.0/go.mod h1:3j2R4OIe/SeS6YDhICBy22RWjJC5eNCJ1V+9+NVNYlo=
 github.com/rogpeppe/go-internal v1.10.0 h1:TMyTOH3F/DB16zRVcYyreMH6GnZZrwQVAoYjRBZyWFQ=
 github.com/rogpeppe/go-internal v1.10.0/go.mod h1:UQnix2H7Ngw/k4C5ijL5+65zddjncjaFoBhdsK/akog=
-github.com/runatlantis/atlantis v0.28.4 h1:4EvB0Rds4Mk5A43QTHrr3QmBHyUza07/kqDDnP+bAlU=
-github.com/runatlantis/atlantis v0.28.4/go.mod h1:WbjXUrPEbYxV65CtTxIP3/WHRGFWR0TzUtLQEstywec=
+github.com/runatlantis/atlantis v0.28.5 h1:YnzHd2VUbTKNH2jfvPAPH6auWeussxa6wBxzbEKj+iw=
+github.com/runatlantis/atlantis v0.28.5/go.mod h1:KObODDEur6ckzeg3RlJusGvVZKuU/3DtEtwOP/2ZlW0=
 github.com/sagikazarmark/locafero v0.4.0 h1:HApY1R9zGo4DBgr7dqsTH/JJxLTTsOt7u6keLGt6kNQ=
 github.com/sagikazarmark/locafero v0.4.0/go.mod h1:Pe1W6UlPYUk/+wc/6KFhbORCfqzgYEpgQ3O5fPuL3H4=
 github.com/sagikazarmark/slog-shim v0.1.0 h1:diDBnUNK9N/354PgrxMywXnAwEr1QZcOr6gto+ugjYE=
