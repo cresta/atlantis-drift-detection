@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.15.7
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.35.2
 	github.com/cresta/gogit v0.0.2
-	github.com/cresta/gogithub v0.1.4
+	github.com/cresta/gogithub v0.1.5
 	github.com/cresta/pipe v0.0.1
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.5.1
@@ -62,7 +62,6 @@ require (
 	github.com/go-playground/validator/v10 v10.22.1 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
-	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/go-github/v29 v29.0.3 // indirect
 	github.com/google/go-github/v62 v62.0.0 // indirect
@@ -116,11 +115,10 @@ require (
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/oauth2 v0.18.0 // indirect
+	golang.org/x/oauth2 v0.24.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
-	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
