@@ -1,6 +1,6 @@
 module github.com/cresta/atlantis-drift-detection
 
-go 1.23.0
+go 1.23.3
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.28.5
@@ -12,7 +12,7 @@ require (
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
-	github.com/runatlantis/atlantis v0.30.0
+	github.com/runatlantis/atlantis v0.31.0
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.9.0
@@ -61,7 +61,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/go-github/v63 v63.0.0 // indirect
 	github.com/google/go-github/v66 v66.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
@@ -77,7 +76,7 @@ require (
 	github.com/hashicorp/hc-install v0.9.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.22.0 // indirect
-	github.com/hashicorp/terraform-config-inspect v0.0.0-20240801114854-6714b46f5fe4 // indirect
+	github.com/hashicorp/terraform-config-inspect v0.0.0-20241107133921-3adb156ecfe2 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
@@ -100,12 +99,12 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7 // indirect
 	github.com/shurcooL/graphql v0.0.0-20230722043721-ed46e5a46466 // indirect
-	github.com/slack-go/slack v0.14.0 // indirect
+	github.com/slack-go/slack v0.15.0 // indirect
 	github.com/spf13/cast v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/twmb/murmur3 v1.1.8 // indirect
-	github.com/uber-go/tally/v4 v4.1.11 // indirect
-	github.com/xanzy/go-gitlab v0.109.0 // indirect
+	github.com/uber-go/tally/v4 v4.1.16 // indirect
+	github.com/xanzy/go-gitlab v0.113.0 // indirect
 	github.com/zclconf/go-cty v1.14.4 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
@@ -113,8 +112,8 @@ require (
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
 	golang.org/x/oauth2 v0.24.0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
+	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
