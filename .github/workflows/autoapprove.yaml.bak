@@ -8,7 +8,7 @@ jobs:
     name: Auto approve renovatebot PRs
     runs-on: ubuntu-latest
     # Only if made by renovatebot application
-    if: github.event.pull_request.user.login == 'self-hosted-renovatebot[bot]'
+    if: github.actor == 'self-hosted-renovatebot[bot]'
     steps:
       - name: Approve
         uses: cresta/action-auto-approve-pr@v1
