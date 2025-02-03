@@ -1,6 +1,6 @@
 module github.com/cresta/atlantis-drift-detection
 
-go 1.23.4
+go 1.23.5
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.1
@@ -12,7 +12,7 @@ require (
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
-	github.com/runatlantis/atlantis v0.32.0
+	github.com/runatlantis/atlantis v0.33.0
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.10.0
@@ -46,7 +46,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.9 // indirect
 	github.com/aws/smithy-go v1.22.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/bradleyfalzon/ghinstallation/v2 v2.12.0 // indirect
+	github.com/bmatcuk/doublestar/v4 v4.8.0 // indirect
+	github.com/bradleyfalzon/ghinstallation/v2 v2.13.0 // indirect
 	github.com/cactus/go-statsd-client/v5 v5.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cloudflare/circl v1.3.9 // indirect
@@ -58,10 +59,11 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.23.0 // indirect
+	github.com/gofri/go-github-ratelimit v1.1.0 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.1 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
-	github.com/google/go-github/v66 v66.0.0 // indirect
+	github.com/google/go-github/v68 v68.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/shlex v0.0.0-20191202100458-e7afc7fbc510 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -104,8 +106,8 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/twmb/murmur3 v1.1.8 // indirect
 	github.com/uber-go/tally/v4 v4.1.16 // indirect
-	github.com/xanzy/go-gitlab v0.114.0 // indirect
 	github.com/zclconf/go-cty v1.14.4 // indirect
+	gitlab.com/gitlab-org/api/client-go v0.118.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.31.0 // indirect
@@ -116,5 +118,5 @@ require (
 	golang.org/x/text v0.21.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
-	google.golang.org/protobuf v1.33.0 // indirect
+	google.golang.org/protobuf v1.36.0 // indirect
 )
