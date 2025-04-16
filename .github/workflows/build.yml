@@ -33,6 +33,8 @@ jobs:
         run: go build -mod=readonly ./cmd/atlantis-drift-detection/main.go
       - name: Verify
         run: go mod verify
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
       - name: Test
         run: go test -v ./...
       - name: Set up Docker Buildx
