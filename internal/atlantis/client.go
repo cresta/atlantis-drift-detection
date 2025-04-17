@@ -125,7 +125,7 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 		retErr := fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
 		if resp.StatusCode == http.StatusServiceUnavailable || resp.StatusCode == http.StatusInternalServerError {
 			// This is a bit of a hack, but atlantis sometimes returns errors we can't fully process. These could be
-			// because the workspace won't apply, or because the service is just overloaded.  We cannot tell.
+			// because the workspace won't apply, or because the service is just overloaded. We cannot tell.
 			return nil, &possiblyTemporaryError{retErr}
 		}
 		return nil, retErr
@@ -134,8 +134,9 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 		return nil, fmt.Errorf("non-200 and non-500 response for %s: %d", destination, resp.StatusCode)
 	}
 
-	if bodyResult.Error != nil {
-		return nil, fmt.Errorf("error making plan request: %w", bodyResult.Error)
+	// Check if there is an error in the response and handle it correctly
+	if bodyResult.Error != "" {
+		return nil, fmt.Errorf("error making plan request: %s", bodyResult.Error)  // Treat bodyResult.Error as a string
 	}
 	if bodyResult.Failure != "" {
 		return nil, fmt.Errorf("failure making plan request: %s", bodyResult.Failure)
