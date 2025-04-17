@@ -66,8 +66,9 @@ type TemporaryError interface {
 	error
 }
 
+// Updated errorResponse to handle dynamic error types
 type errorResponse struct {
-	Error string `json:"error"`
+	Error interface{} `json:"error"` // Allow both string and structured errors
 }
 
 func (p *possiblyTemporaryError) Temporary() bool {
@@ -112,34 +113,50 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 	if err := resp.Body.Close(); err != nil {
 		return nil, fmt.Errorf("unable to close response body: %w", err)
 	}
+
 	if resp.StatusCode == http.StatusUnauthorized {
 		var errResp errorResponse
 		if err := json.NewDecoder(&fullBody).Decode(&errResp); err != nil {
 			return nil, fmt.Errorf("unauthorized request to %s: %w", destination, err)
 		}
-		return nil, fmt.Errorf("unauthorized request to %s: %s", destination, errResp.Error)
+
+		// Handle different error types dynamically
+		switch errResp.Error := errResp.Error.(type) {
+		case string:
+			// Simple string error
+			return nil, fmt.Errorf("unauthorized request to %s: %s", destination, errResp.Error)
+		case map[string]interface{}:
+			// Structured error object
+			return nil, fmt.Errorf("unauthorized request to %s: %v", destination, errResp.Error)
+		default:
+			// Unknown error format
+			return nil, fmt.Errorf("unknown error format in response: %v", errResp.Error)
+		}
 	}
 
 	var bodyResult command.Result
 	if err := json.NewDecoder(&fullBody).Decode(&bodyResult); err != nil {
 		retErr := fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
 		if resp.StatusCode == http.StatusServiceUnavailable || resp.StatusCode == http.StatusInternalServerError {
-			// This is a bit of a hack, but atlantis sometimes returns errors we can't fully process. These could be
-			// because the workspace won't apply, or because the service is just overloaded.  We cannot tell.
+			// Handle temporary errors from Atlantis
 			return nil, &possiblyTemporaryError{retErr}
 		}
 		return nil, retErr
 	}
+
 	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusInternalServerError {
 		return nil, fmt.Errorf("non-200 and non-500 response for %s: %d", destination, resp.StatusCode)
 	}
 
+	// Check for errors in bodyResult
 	if bodyResult.Error != nil {
 		return nil, fmt.Errorf("error making plan request: %w", bodyResult.Error)
 	}
 	if bodyResult.Failure != "" {
 		return nil, fmt.Errorf("failure making plan request: %s", bodyResult.Failure)
 	}
+
+	// Process project results
 	var ret PlanResult
 	for _, result := range bodyResult.ProjectResults {
 		if result.Failure != "" {
@@ -154,7 +171,7 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 			continue
 		}
 		return nil, fmt.Errorf("project result unknown failure: %s", result.Failure)
-
 	}
+
 	return &ret, nil
 }
