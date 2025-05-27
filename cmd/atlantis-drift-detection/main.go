@@ -17,10 +17,10 @@ import (
 	"github.com/joho/godotenv"
 
 	// Empty import allows pinning to version atlantis uses
+	"github.com/joeshaw/envdecode"
 	_ "github.com/nlopes/slack"
 	"go.uber.org/zap"
 )
-import "github.com/joeshaw/envdecode"
 
 type config struct {
 	Repo               string        `env:"REPO,required"`
@@ -36,6 +36,7 @@ type config struct {
 	WorkflowRepo       string        `env:"WORKFLOW_REPO"`
 	WorkflowId         string        `env:"WORKFLOW_ID"`
 	WorkflowRef        string        `env:"WORKFLOW_REF"`
+	AtlantisCmdFlags   []string      `env:"ATLANTIS_CMD_FLAGS"`
 }
 
 func loadEnvIfExists() error {
@@ -143,6 +144,7 @@ func main() {
 		Terraform:          &tf,
 		Notification:       notif,
 		SkipWorkspaceCheck: cfg.SkipWorkspaceCheck,
+		AtlantisCmdFlags:   cfg.AtlantisCmdFlags,
 	}
 	if err := d.Drift(ctx); err != nil {
 		logger.Panic("failed to drift", zap.Error(err))

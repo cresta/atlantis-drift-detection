@@ -25,6 +25,7 @@ type PlanSummaryRequest struct {
 	Type      string
 	Dir       string
 	Workspace string
+	CmdFlags  []string
 }
 
 type PlanResult struct {
@@ -82,10 +83,12 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 		Paths: []struct {
 			Directory string
 			Workspace string
+			Flags     []string
 		}{
 			{
 				Directory: req.Dir,
 				Workspace: req.Workspace,
+				Flags:     req.CmdFlags,
 			},
 		},
 	}
