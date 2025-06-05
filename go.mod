@@ -2,7 +2,7 @@ module github.com/cresta/atlantis-drift-detection
 
 go 1.24.1
 
-toolchain go1.24.3
+toolchain go1.24.4
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.14
