@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/atlantisgithub"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
@@ -13,8 +16,6 @@ import (
 	"github.com/cresta/gogithub"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
-	"os"
-	"time"
 )
 
 type Drifter struct {
@@ -30,6 +31,7 @@ type Drifter struct {
 	DirectoryWhitelist []string
 	SkipWorkspaceCheck bool
 	ParallelRuns       int
+	AtlantisCmdFlags   []string
 }
 
 func (d *Drifter) Drift(ctx context.Context) error {
@@ -148,6 +150,7 @@ func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.Directo
 					Type:      "Github",
 					Dir:       dir,
 					Workspace: workspace,
+					CmdFlags:  d.AtlantisCmdFlags,
 				})
 				if err != nil {
 					var tmp atlantis.TemporaryError
