@@ -16,11 +16,11 @@ import (
 	"github.com/cresta/gogithub"
 	"github.com/joho/godotenv"
 
+	"github.com/joeshaw/envdecode"
 	// Empty import allows pinning to version atlantis uses
 	_ "github.com/nlopes/slack"
 	"go.uber.org/zap"
 )
-import "github.com/joeshaw/envdecode"
 
 type config struct {
 	Repo               string        `env:"REPO,required"`
@@ -35,7 +35,7 @@ type config struct {
 	WorkflowOwner      string        `env:"WORKFLOW_OWNER"`
 	WorkflowRepo       string        `env:"WORKFLOW_REPO"`
 	WorkflowId         string        `env:"WORKFLOW_ID"`
-	WorkflowRef        string        `env:"WORKFLOW_REF"`
+	WorkflowRef        string        `env:"WORKFLOW_REF,default=master"`
 }
 
 func loadEnvIfExists() error {
@@ -130,6 +130,7 @@ func main() {
 		DirectoryWhitelist: cfg.DirectoryWhitelist,
 		Logger:             logger.With(zap.String("drifter", "true")),
 		Repo:               cfg.Repo,
+		Ref:                cfg.WorkflowRef,
 		AtlantisClient: &atlantis.Client{
 			AtlantisHostname: cfg.AtlantisHostname,
 			Token:            cfg.AtlantisToken,
