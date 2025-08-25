@@ -4,6 +4,9 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+	"time"
+
 	"github.com/cresta/atlantis-drift-detection/internal/atlantis"
 	"github.com/cresta/atlantis-drift-detection/internal/atlantisgithub"
 	"github.com/cresta/atlantis-drift-detection/internal/notification"
@@ -13,8 +16,6 @@ import (
 	"github.com/cresta/gogithub"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
-	"os"
-	"time"
 )
 
 type Drifter struct {
@@ -153,6 +154,9 @@ func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.Directo
 					var tmp atlantis.TemporaryError
 					if errors.As(err, &tmp) && tmp.Temporary() {
 						d.Logger.Warn("Temporary error.  Will try again later.", zap.Error(err))
+						if err := d.Notification.TemporaryError(ctx, dir, workspace, err); err != nil {
+							return fmt.Errorf("failed to notify of temporary error in %s: %w", dir, err)
+						}
 						continue
 					}
 					return fmt.Errorf("failed to get plan summary for (%s#%s): %w", dir, workspace, err)
