@@ -1,6 +1,6 @@
 module github.com/cresta/atlantis-drift-detection
 
-go 1.24.4
+go 1.25.3
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.31.20
@@ -12,7 +12,7 @@ require (
 	github.com/joeshaw/envdecode v0.0.0-20200121155833-099f1fc765bd
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
-	github.com/runatlantis/atlantis v0.36.0
+	github.com/runatlantis/atlantis v0.37.1
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/zap v1.27.0
 	golang.org/x/sync v0.18.0
@@ -114,7 +114,7 @@ require (
 	golang.org/x/mod v0.27.0 // indirect
 	golang.org/x/net v0.43.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 	golang.org/x/tools v0.36.0 // indirect
