@@ -20,6 +20,7 @@ import (
 type Drifter struct {
 	Logger             *zap.Logger
 	Repo               string
+	RepoRef            string
 	Cloner             *gogit.Cloner
 	GithubClient       gogithub.GitHub
 	Terraform          *terraform.Client
@@ -33,7 +34,7 @@ type Drifter struct {
 }
 
 func (d *Drifter) Drift(ctx context.Context) error {
-	repo, err := atlantisgithub.CheckOutTerraformRepo(ctx, d.GithubClient, d.Cloner, d.Repo)
+	repo, err := atlantisgithub.CheckOutTerraformRepo(ctx, d.GithubClient, d.Cloner, d.Repo, d.RepoRef)
 	if err != nil {
 		return fmt.Errorf("failed to checkout repo %s: %w", d.Repo, err)
 	}
@@ -144,7 +145,7 @@ func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.Directo
 
 				pr, err := d.AtlantisClient.PlanSummary(ctx, &atlantis.PlanSummaryRequest{
 					Repo:      d.Repo,
-					Ref:       "master",
+					Ref:       d.RepoRef,
 					Type:      "Github",
 					Dir:       dir,
 					Workspace: workspace,

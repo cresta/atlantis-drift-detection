@@ -87,11 +87,12 @@ jobs:
     runs-on: [self-hosted]
     steps:
       - name: detect drift
-        uses: cresta/atlantis-drift-detection@v0.0.7
+        uses: cresta/atlantis-drift-detection@v1.0.1
         env:
           ATLANTIS_HOST: atlantis.atlantis.svc.cluster.local
           ATLANTIS_TOKEN: ${{ secrets.ATLANTIS_TOKEN }}
           REPO: cresta/terraform-monorepo
+          REPO_REF: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           DYNAMODB_TABLE: atlantis-drift-detection
@@ -110,6 +111,7 @@ jobs:
 | Environment Variable     | Description                                                                      | Required | Default                    | Example                                                             |
 |--------------------------|----------------------------------------------------------------------------------|----------|----------------------------|---------------------------------------------------------------------|
 | `REPO`                   | The github repo to check                                                         | Yes      |                            | `cresta/terraform-monorepo`                                         |
+| `REPO_REF`               | The git branch/ref to use when checking for drift                                | No       | `master`                   | `main`                                                              |
 | `ATLANTIS_HOST`          | The Hostname of the Atlantis server                                              | Yes      |                            | `atlantis.example.com`                                              |
 | `ATLANTIS_TOKEN`         | The Atlantis API token                                                           | Yes      |                            | `1234567890`                                                        |
 | `WORKFLOW_OWNER`         | The github owner of the workflow to trigger on drift                             | No       |                            | `cresta`                                                            |

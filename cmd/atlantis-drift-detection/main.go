@@ -24,6 +24,7 @@ import "github.com/joeshaw/envdecode"
 
 type config struct {
 	Repo               string        `env:"REPO,required"`
+	RepoRef            string        `env:"REPO_REF,default=master"`
 	AtlantisHostname   string        `env:"ATLANTIS_HOST,required"`
 	AtlantisToken      string        `env:"ATLANTIS_TOKEN,required"`
 	DirectoryWhitelist []string      `env:"DIRECTORY_WHITELIST"`
@@ -130,6 +131,7 @@ func main() {
 		DirectoryWhitelist: cfg.DirectoryWhitelist,
 		Logger:             logger.With(zap.String("drifter", "true")),
 		Repo:               cfg.Repo,
+		RepoRef:            cfg.RepoRef,
 		AtlantisClient: &atlantis.Client{
 			AtlantisHostname: cfg.AtlantisHostname,
 			Token:            cfg.AtlantisToken,
