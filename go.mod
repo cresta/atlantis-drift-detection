@@ -4,7 +4,7 @@ go 1.24.4
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.32.3
-	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.20.26
+	github.com/aws/aws-sdk-go-v2/feature/dynamodb/attributevalue v1.20.27
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.53.3
 	github.com/cresta/gogit v0.0.2
 	github.com/cresta/gogithub v0.2.0
@@ -38,7 +38,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.15 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.15 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.32.6 // indirect
+	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.32.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.11.15 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.15 // indirect
