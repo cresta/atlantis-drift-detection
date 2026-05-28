@@ -1,6 +1,6 @@
 module github.com/cresta/atlantis-drift-detection
 
-go 1.24.4
+go 1.25.0
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.32.7
@@ -15,7 +15,7 @@ require (
 	github.com/runatlantis/atlantis v0.36.0
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/zap v1.28.0
-	golang.org/x/sync v0.19.0
+	golang.org/x/sync v0.20.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
