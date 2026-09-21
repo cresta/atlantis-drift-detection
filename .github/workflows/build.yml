@@ -34,7 +34,7 @@ jobs:
       - name: Verify
         run: go mod verify
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        uses: hashicorp/setup-terraform@v4
       - name: Test
         run: go test -v ./...
       - name: Set up Docker Buildx
