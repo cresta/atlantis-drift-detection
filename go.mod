@@ -13,7 +13,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/nlopes/slack v0.6.0
 	github.com/runatlantis/atlantis v0.36.0
-	github.com/stretchr/testify v1.11.1
+	github.com/stretchr/testify v1.12.1
 	go.uber.org/zap v1.28.0
 	golang.org/x/sync v0.19.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -53,7 +53,6 @@ require (
 	github.com/cactus/go-statsd-client/v5 v5.1.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudflare/circl v1.6.1 // indirect
-	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/davidmz/go-pageant v1.0.2 // indirect
 	github.com/drmaxgit/go-azuredevops v0.13.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
@@ -93,7 +92,6 @@ require (
 	github.com/moby/patternmatcher v0.6.0 // indirect
 	github.com/opentofu/tofudl v0.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.19.0 // indirect
 	github.com/prometheus/client_model v0.6.0 // indirect
 	github.com/prometheus/common v0.50.0 // indirect
@@ -111,6 +109,7 @@ require (
 	gitlab.com/gitlab-org/api/client-go v0.118.0 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
+	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.41.0 // indirect
 	golang.org/x/mod v0.27.0 // indirect
 	golang.org/x/net v0.43.0 // indirect
