@@ -6,7 +6,7 @@ Detect terraform drift in atlantis
 The general workflow of this repository is:
 1. Check out a mono repo of terraform code
 2. Find an atlantis.yaml file inside the repository
-3. Use atlantis to run /plan on each project in the atlantis.yaml file
+3. Use atlantis to run /plan on each project in the atlantis.yaml file, against the repository's default branch
 4. For each project with drift
     1. Trigger a GitHub workflow that can resolve the drift
     2. Comment the existence of the drift in slack
