@@ -43,12 +43,16 @@ func (d *Drifter) Drift(ctx context.Context) error {
 			d.Logger.Warn("failed to cleanup repo", zap.Error(err))
 		}
 	}()
+	ref, err := repo.CurrentBranchName(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get checked out branch of %s: %w", d.Repo, err)
+	}
 	cfg, err := atlantis.ParseRepoConfigFromDir(repo.Location())
 	if err != nil {
 		return fmt.Errorf("failed to parse repo config: %w", err)
 	}
 	workspaces := atlantis.ConfigToWorkspaces(cfg)
-	if err := d.FindDriftedWorkspaces(ctx, workspaces); err != nil {
+	if err := d.FindDriftedWorkspaces(ctx, ref, workspaces); err != nil {
 		return fmt.Errorf("failed to find drifted workspaces: %w", err)
 	}
 	if err := d.FindExtraWorkspaces(ctx, workspaces); err != nil {
@@ -113,7 +117,7 @@ func (d *Drifter) drainAndExecute(ctx context.Context, toRun []errFunc) error {
 	return eg.Wait()
 }
 
-func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.DirectoriesWithWorkspaces) error {
+func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ref string, ws atlantis.DirectoriesWithWorkspaces) error {
 	runningFunc := func(dir string) errFunc {
 		return func(ctx context.Context) error {
 			if d.shouldSkipDirectory(dir) {
@@ -144,7 +148,7 @@ func (d *Drifter) FindDriftedWorkspaces(ctx context.Context, ws atlantis.Directo
 
 				pr, err := d.AtlantisClient.PlanSummary(ctx, &atlantis.PlanSummaryRequest{
 					Repo:      d.Repo,
-					Ref:       "master",
+					Ref:       ref,
 					Type:      "Github",
 					Dir:       dir,
 					Workspace: workspace,
