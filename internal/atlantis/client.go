@@ -119,11 +119,21 @@ func (c *Client) PlanSummary(ctx context.Context, req *PlanSummaryRequest) (*Pla
 		}
 		return nil, fmt.Errorf("unauthorized request to %s: %s", destination, errResp.Error)
 	}
+	isPossiblyTemporary := resp.StatusCode == http.StatusServiceUnavailable || resp.StatusCode == http.StatusInternalServerError
+
+	var errResp errorResponse
+	if err := json.Unmarshal(fullBody.Bytes(), &errResp); err == nil && errResp.Error != "" {
+		retErr := fmt.Errorf("atlantis error for plan request(code:%d)(status:%s): %s", resp.StatusCode, resp.Status, errResp.Error)
+		if isPossiblyTemporary {
+			return nil, &possiblyTemporaryError{retErr}
+		}
+		return nil, retErr
+	}
 
 	var bodyResult command.Result
-	if err := json.NewDecoder(&fullBody).Decode(&bodyResult); err != nil {
+	if err := json.Unmarshal(fullBody.Bytes(), &bodyResult); err != nil {
 		retErr := fmt.Errorf("error decoding plan response(code:%d)(status:%s)(body:%s): %w", resp.StatusCode, resp.Status, fullBody.String(), err)
-		if resp.StatusCode == http.StatusServiceUnavailable || resp.StatusCode == http.StatusInternalServerError {
+		if isPossiblyTemporary {
 			// This is a bit of a hack, but atlantis sometimes returns errors we can't fully process. These could be
 			// because the workspace won't apply, or because the service is just overloaded.  We cannot tell.
 			return nil, &possiblyTemporaryError{retErr}
