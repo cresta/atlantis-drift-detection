@@ -10,8 +10,8 @@ The general workflow of this repository is:
 4. For each project with drift
     1. Trigger a GitHub workflow that can resolve the drift
     2. Comment the existence of the drift in slack
-5. For each project directory in the atlantis.yaml
-   1. Run workspace list
+5. For each project directory in the atlantis.yaml, inside the drift detection container
+   1. Run `terraform init` and `terraform workspace list`
    2. If any workspace isn't tracked by atlantis, notify slack
 
 There is an optional flag to cache drift results inside DynamoDB, so we don't check the same directory twice in a short period of time.
@@ -118,13 +118,17 @@ jobs:
 | `WORKFLOW_REF`           | The git ref to trigger the workflow on                                           | No       |                            | `master`                                                            |
 | `DIRECTORY_WHITELIST`    | A comma separated list of directories to check                                   | No       |                            | `terraform,modules`                                                 |
 | `SLACK_WEBHOOK_URL`      | The Slack webhook URL to post updates to                                         | No       |                            | `https://hooks.slack.com/services/1234567890/1234567890/1234567890` |
-| `SKIP_WORKSPACE_CHECK`   | Skip checking if the workspace have drifted                                      | No       | `false`                    | `true`                                                              |
+| `SKIP_WORKSPACE_CHECK`   | Skip step 5, the extra workspace check that runs `terraform init` locally        | No       | `false`                    | `true`                                                              |
 | `PARALLEL_RUNS`          | The number of parallel runs to use                                               | No       | `1`                        | `10`                                                                |
 | `DYNAMODB_TABLE`         | The name of the DynamoDB table to use for caching results                        | No       | `atlantis-drift-detection` | `atlantis-drift-detection`                                          |
 | `CACHE_VALID_DURATION`   | The duration that previous results are still valid                               | No       | `24h`                      | `180h`                                                              |
 | `GITHUB_APP_ID`          | An application ID to use for github API calls                                    | No       |                            | `123123`                                                            |
 | `GITHUB_INSTALLATION_ID` | An application install ID to use for github API calls                            | No       |                            | `123123`                                                            |
 | `GITHUB_PEM_KEY`         | A GitHub PEM key of an application, used to authenticate the app for API calls   | No       |                            | `1231DEADBEAF....`                                                  |
+
+The extra workspace check (step 5) runs terraform in the drift detection container, not on the Atlantis server.
+It needs the same access Atlantis has: credentials for the state backend, such as AWS credentials for an S3 backend, and git access to any private modules.
+If the container doesn't have that access, set `SKIP_WORKSPACE_CHECK=true`. Drift plans still run on Atlantis.
 
 # Local development
 
