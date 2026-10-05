@@ -16,6 +16,10 @@ The general workflow of this repository is:
 
 There is an optional flag to cache drift results inside DynamoDB, so we don't check the same directory twice in a short period of time.
 
+Step 5 runs `terraform` by default. Set `TERRAFORM_BINARY` to use another compatible binary, such as OpenTofu's `tofu`.
+The published image only includes terraform, so with the GitHub Action, download the binary into the workspace in an earlier step and set `TERRAFORM_BINARY` to its path under `/github/workspace`.
+Terragrunt setups that don't use terraform workspaces can set `SKIP_WORKSPACE_CHECK=true` instead.
+
 # Example for "Trigger a github workflow that can resolve the drift"
 
 Here is the example we use to resolve a drift.  This workflow touches a "trigger.txt" file that we configure all
@@ -122,6 +126,7 @@ jobs:
 | `PARALLEL_RUNS`          | The number of parallel runs to use                                               | No       | `1`                        | `10`                                                                |
 | `DYNAMODB_TABLE`         | The name of the DynamoDB table to use for caching results                        | No       | `atlantis-drift-detection` | `atlantis-drift-detection`                                          |
 | `CACHE_VALID_DURATION`   | The duration that previous results are still valid                               | No       | `24h`                      | `180h`                                                              |
+| `TERRAFORM_BINARY`       | The terraform compatible binary used in step 5, such as `tofu`                   | No       | `terraform`                | `/github/workspace/bin/tofu`                                        |
 | `GITHUB_APP_ID`          | An application ID to use for github API calls                                    | No       |                            | `123123`                                                            |
 | `GITHUB_INSTALLATION_ID` | An application install ID to use for github API calls                            | No       |                            | `123123`                                                            |
 | `GITHUB_PEM_KEY`         | A GitHub PEM key of an application, used to authenticate the app for API calls   | No       |                            | `1231DEADBEAF....`                                                  |

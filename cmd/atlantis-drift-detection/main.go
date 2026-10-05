@@ -36,6 +36,7 @@ type config struct {
 	WorkflowRepo       string        `env:"WORKFLOW_REPO"`
 	WorkflowId         string        `env:"WORKFLOW_ID"`
 	WorkflowRef        string        `env:"WORKFLOW_REF"`
+	TerraformBinary    string        `env:"TERRAFORM_BINARY"`
 }
 
 func loadEnvIfExists() error {
@@ -115,6 +116,7 @@ func main() {
 	}
 	tf := terraform.Client{
 		Logger: logger.With(zap.String("terraform", "true")),
+		Binary: cfg.TerraformBinary,
 	}
 
 	var cache processedcache.ProcessedCache = processedcache.Noop{}

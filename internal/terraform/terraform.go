@@ -13,6 +13,14 @@ import (
 type Client struct {
 	Directory string
 	Logger    *zap.Logger
+	Binary    string
+}
+
+func (c *Client) binary() string {
+	if c.Binary == "" {
+		return "terraform"
+	}
+	return c.Binary
 }
 
 type execErr struct {
@@ -32,7 +40,7 @@ func (e *execErr) Error() string {
 func (c *Client) Init(ctx context.Context, subDir string) error {
 	c.Logger.Info("Initializing terraform", zap.String("dir", subDir))
 	var stdout, stderr bytes.Buffer
-	result := pipe.NewPiped("terraform", "init", "-no-color").WithDir(filepath.Join(c.Directory, subDir)).Execute(ctx, nil, &stdout, &stderr)
+	result := pipe.NewPiped(c.binary(), "init", "-no-color").WithDir(filepath.Join(c.Directory, subDir)).Execute(ctx, nil, &stdout, &stderr)
 	if result != nil {
 		return &execErr{
 			stdout: stdout,
@@ -46,7 +54,7 @@ func (c *Client) Init(ctx context.Context, subDir string) error {
 func (c *Client) ListWorkspaces(ctx context.Context, subDir string) ([]string, error) {
 	c.Logger.Info("Listing workspaces", zap.String("dir", subDir))
 	var stdout, stderr bytes.Buffer
-	result := pipe.NewPiped("terraform", "workspace", "list").WithDir(filepath.Join(c.Directory, subDir)).Execute(ctx, nil, &stdout, &stderr)
+	result := pipe.NewPiped(c.binary(), "workspace", "list").WithDir(filepath.Join(c.Directory, subDir)).Execute(ctx, nil, &stdout, &stderr)
 	if result != nil {
 		return nil, &execErr{
 			stdout: stdout,
